@@ -1,0 +1,26 @@
+## Customize the test machine
+machine:
+  java:
+    version: oraclejdk7
+
+dependencies:
+  # Cache maven local repository so that we don't have to get dependencies every time
+  cache_directories:
+    - ~/.m2/repository
+
+  override:
+    - mvn clean install
+
+test:
+  override:
+    # Run junit
+    # clean is required to make copy-plugin copy http-api-mock.war into project's lib directory
+    - mvn clean verify
+
+  # After running tests collect junit & integration-test reports and build artifacts
+  post:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - mkdir -p $CIRCLE_TEST_REPORTS/integration-test/
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;  #JUnit tests
+    - find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/integration-test/ \;  #JUnit tests
+    - cp target/http-test-conductor*.jar $CIRCLE_ARTIFACTS/ # Store builded jar as an artifact
