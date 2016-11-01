@@ -72,6 +72,35 @@
                     <testSourceDirectory>src/test/java</testSourceDirectory>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.5.v20120716</version>
+				<configuration>
+					<stopKey>STOP</stopKey>
+					<stopPort>9992</stopPort>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
+					<webAppConfig>
+						<contextPath>/mock-server</contextPath>
+					</webAppConfig>
+					<connectors>
+						<connector
+								implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>8888</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<contextHandlers>
+						<contextHandler
+								implementation="org.mortbay.jetty.plugin.JettyWebAppContext">
+							<contextPath>/mock</contextPath>
+							<war>lib/http-api-mock.war</war>
+							<extraClasspath>${basedir}/src/test/resources/web</extraClasspath>
+						</contextHandler>
+					</contextHandlers>
+					<useTestClasspath>true</useTestClasspath>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
