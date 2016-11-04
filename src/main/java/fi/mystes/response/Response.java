@@ -23,7 +23,7 @@ import fi.mystes.http.ConfigurableHttpEntity;
  */
 public class Response extends ConfigurableHttpEntity<Response>{
 
-	protected Response() {
+	public Response() {
 		super(Response.class);
 	}
 	
