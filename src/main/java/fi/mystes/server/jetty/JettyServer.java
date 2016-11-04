@@ -15,6 +15,7 @@
  */
 package fi.mystes.server.jetty;
 
+import fi.mystes.mock.IApiMock;
 import org.mortbay.jetty.Server;
 import org.mortbay.resource.Resource;
 
@@ -54,8 +55,10 @@ public class JettyServer extends Server implements IMockServer{
 	}
 	
 	@Override
-	public void tearUp() throws Exception {
-		start();
+	public void tearUp(IApiMock mockServer, Integer port) throws Exception {
+		if (!mockServer.isAlive(port)) {
+			start();
+		}
 	}
 
 	@Override

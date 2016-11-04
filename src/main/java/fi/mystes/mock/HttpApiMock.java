@@ -18,6 +18,7 @@ package fi.mystes.mock;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.log4j.Logger;
 
 import com.mashape.unirest.http.Headers;
@@ -34,7 +35,25 @@ import fi.mystes.response.Response;
  */
 public class HttpApiMock implements IApiMock<HttpApiMock>{
 	private static final Logger logger = Logger.getLogger(HttpApiMock.class);
+	private static final String PROTOCOL = "http";
+	private static final String HOST = "localhost";
+	private static final String HEALT_CHECK_POSTFIX = "/mock/services";
 
+	@Override
+	public boolean isAlive(Integer port) {
+		logger.info("Checking if HttpApiMock is alive");
+		try {
+			HttpResponse<String> result = new RestRequest("",
+				getBaseUrl(port) + HEALT_CHECK_POSTFIX,
+				"get",
+				null, null).sendRequest();
+		} catch (Exception e) {
+			logger.info("HttpApiMock not available");
+			return false;
+		}
+		logger.info("HttpApiMock found running in port: " + port);
+		return true;
+	}
 
 	@Override
 	public HttpApiMock init(String uri) throws Exception {
@@ -90,6 +109,10 @@ public class HttpApiMock implements IApiMock<HttpApiMock>{
 		logger.info("Fetched recorded headers: " + recordedHeaders.toString());
 
 		return recordedHeaders;
+	}
+
+	private String getBaseUrl(Integer port) {
+		return PROTOCOL + "://" + HOST + ":" + port;
 	}
 
 	private void handleHeaders(Response response) {

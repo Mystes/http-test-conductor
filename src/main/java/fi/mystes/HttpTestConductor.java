@@ -133,7 +133,7 @@ public abstract class HttpTestConductor {
 		
 		server = ServerFactory.createServer(ServerFactory.Type.valueOf(serverType), serverPort);
 		server.addWebApp(webAppFileUrl, webAppContextPath, extraClassath);
-	    server.tearUp();
+	    server.tearUp(apiMock, serverPort);
 	    
 	    factory = DocumentBuilderFactory.newInstance();
 	    factory.setNamespaceAware(true);

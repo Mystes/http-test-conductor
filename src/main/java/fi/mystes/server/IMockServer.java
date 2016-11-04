@@ -15,6 +15,8 @@
  */
 package fi.mystes.server;
 
+import fi.mystes.mock.IApiMock;
+
 /**
  * Interface for mock server implementation.
  *
@@ -56,7 +58,7 @@ public interface IMockServer {
 	 * 
 	 * @throws Exception If server start fails
 	 */
-	public void tearUp() throws Exception;
+	public void tearUp(IApiMock mockServer, Integer port) throws Exception;
 	
 	/**
 	 * Stops server.

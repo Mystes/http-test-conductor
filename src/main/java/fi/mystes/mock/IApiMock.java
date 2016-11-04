@@ -25,7 +25,8 @@ import fi.mystes.response.Response;
  * @param <T> Implemented class to allow chain invocation.
  */
 public interface IApiMock<T> {
-	
+
+	public boolean isAlive(Integer port);
 	/**
 	 * Method to initialize given URI
 	 * 
